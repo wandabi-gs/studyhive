@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load hq_thumbnail %}
+
+{% block title %} Interest - {{interest.name}} {% endblock %}
+
+{% block content %}
+<div class="">
+    <div class="mb-3">
+        <h5>{{interest.name}}</h5>
+        <p>{{interest.description}}</p>
+    </div>
+
+    <div class="row">
+        {% for recommendation in recommendations %}
+        <div class="col-lg-3 col-md-4 col-sm-6 p-3 pb-5 d-flex flex-column">
+            <div class="card border border-primary flex-grow-1">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <a href="{% url 'recommendation' pk=recommendation.uid %}" class="d-block blur-shadow-image">
+                        <img src="{{ recommendation.thumbnail|hq_thumbnail}}" alt="img-blur-shadow"
+                            class="img-fluid shadow border-radius-lg">
+                    </a>
+                </div>
+                <div class="card-body text-center">
+                        <p class="mb-0">{{recommendation.title}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

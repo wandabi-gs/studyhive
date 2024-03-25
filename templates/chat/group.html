@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %} Group - {{group.name}} {% endblock %}
+
+{% block content %}
+<div class="row bg-white shadow p-3 rounded" style="height: 95vh;">
+    <div class="col-2 shadow bg-white rounded" style="height:95vh;overflow-y: auto;">
+        {% for ugroup in groups %}
+        {% if ugroup.id == group.id %}
+        <a href="{% url 'group' ugroup.uid %}"
+            class="w-100 px-2 d-flex flex-column text-white is-active w-100 bg-gradient-primary py-3 rounded my-2">
+            <div class="d-flex text-uppercase text-md text-bold">
+                <span class="mx-2">
+                    <i class="fas fa-book" aria-hidden="true"></i>
+                </span>
+                <span>
+                    {{ugroup.name}}
+                </span>
+            </div>
+            <p class="my-0 py-0 ms-2 text-sm"><b class="text-lowercase me-2">{{ugroup.latest.username}}</b>{{ugroup.latest.message}}</p>
+        </a>
+        {% else %}
+        <a href="{% url 'group' ugroup.uid %}"
+            class="w-100 rounded shadow px-2 d-flex flex-column text-black bg-light py-3 my-2">
+            <div class="d-flex text-uppercase text-md text-bold">
+                <span class="mx-2">
+                    <i class="fas fa-book" aria-hidden="true"></i>
+                </span>
+                <span>
+                    {{ugroup.name}}
+                </span>
+            </div>
+            <p class="my-0 py-0 ms-2 text-sm"><b class="text-lowercase me-2">{{ugroup.latest.username}}</b>{{ugroup.latest.message}}</p>
+        </a>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-10 d-flex flex-column bg-light" style="height:95vh;overflow-y: auto;">
+        <div class="flex-grow-1" style="overflow-y: auto;" id="chatbox">
+            {% for chat in chats %}
+            <div
+                class="d-flex p-4 {% if membership.id == chat.member.id %} justify-content-end {% else %} justify-content-start {% endif %}">
+
+                <div
+                    class="shadow rounded p-3 {% if membership.id == chat.member.id %} bg-info text-white {% else %} bg-secondary text-white {% endif %}">
+                    <p class="my-0 py-0 text-bold text-lowercase">{{chat.member.member.username}}</p>
+                    <p class="my-0 py-0">{{chat.message}}</p>
+                    <div class="d-flex justify-content-end my-0 py-0">
+                        <p class="my-0 py-0">{{chat.date}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="py-2">
+            <form id="chatform" class="d-flex justify-content-between">
+                {% csrf_token %}
+                <div class="input-group input-group-outline">
+                    <input id="chat-message" type="text" class="form-control rounded mx-2" name="message"
+                        placeholder="Type a message" required>
+                </div>
+                <button class="btn btn-primary h-100" type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
+
+        var ws = new WebSocket("ws://" + window.location.host + "/chat/{{group.uid}}/");
+        ws.onmessage = function (event) {
+            var data = JSON.parse(event.data);
+            var message_type = data['type'];
+            var message = data['message'];
+            var member = data['member'];
+            var date = new Date(data['date']).toLocaleString();
+            var membership = '{{membership.member.id}}';
+
+            if (message_type == "chat_message") {
+                var div = document.createElement('div');
+                div.classList.add('d-flex')
+                div.classList.add('p-4')
+
+                if (membership == member.id) {
+                    div.classList.add('justify-content-end')
+                } else {
+                    div.classList.add('justify-content-start')
+                }
+
+                div.innerHTML = `            
+                    <div class="shadow rounded text-white p-3 ${membership == member.id ? 'bg-info' : 'bg-secondary'}">
+                        <p class="my-0 py-0 text-bold text-lowercase">${member?.username.toString().toLowerCase()}</p>
+                        <p class="my-0 py-0">${message}</p>
+                        <div class="d-flex justify-content-end my-0 py-0">
+                            <p class="my-0 py-0">${date}</p>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('chatbox').appendChild(div);
+                document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
+            }
+        };
+        document.getElementById('chatform').onsubmit = function (e) {
+            e.preventDefault();
+            var message = document.getElementById('chat-message').value;
+            ws.send(JSON.stringify({ message: message, type: 'chat_message', upload: null }));
+            document.getElementById('chat-message').value = '';
+            document.getElementById('chatbox').scrollTop = document.getElementById('chatbox').scrollHeight;
+            return false;
+        };
+    });
+</script>
+{% endblock %}

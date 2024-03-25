@@ -1,0 +1,34 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %} Interest - {{interest.name}} {% endblock %}
+
+{% block content %}
+<form method="post" class="col-lg-4 col-md-6 col-sm-10 mx-auto card p-3 border border-primary">
+    {% csrf_token %}
+    <div class="mb-3">
+        <h4 class="text-start">Edit {{interest.name}}</h4>
+        {% if error %}
+        <p class="text-danger">{{error}}</p>
+        {% endif %}
+        <hr class="dark py-0 my-0">
+    </div>
+    <div class="mb-4">
+        <label for="name" class="form-label">Interest Name</label>
+        <input type="text" class="form-control border border-primary rounded px-3" id="name" name="name" value="{{interest.name}}">
+    </div>
+    <div class="mb-4">
+        <label for="description" class="form-label">Interest Description</label>
+        <textarea class="form-control border border-primary rounded px-3" id="description" name="description" rows="3">{{interest.description}}</textarea>
+    </div>
+    <div class="mb-4">
+        <label for="category" class="form-label">Category</label>
+        <select class="form-select border border-primary rounded px-3" id="category" name="category">
+            <option value="{{interest.category.uid}}" selected>{{interest.category.name}}</option>
+            {% for category in categories %}
+            <option value="{{category.uid}}">{{category.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+{% endblock %}

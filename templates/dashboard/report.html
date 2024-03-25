@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .d-flex {
+            display: flex;
+        }
+
+        h1, p{
+            padding: 0%;
+            margin: 0%;
+        }
+
+        .flex-column {
+            flex-direction: column;
+        }
+
+        .justify-content-center {
+            justify-content: center;
+        }
+
+        .justify-content-between {
+            justify-content: space-between;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .mb-4 {
+            margin-bottom: 3rem;
+        }
+
+        table {
+            width: 100%;
+        }
+
+        table,
+        thead,
+        tbody,
+        th,
+        td,
+        tr {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 0.5rem;
+        }
+
+        .img {
+            width: 100;
+            background-color: transparent;
+        }
+    </style>
+</head>
+
+<body style="padding: 2;">
+    <div style="display: flex;justify-content: space-between;">
+        <table style="border: none;">
+            <tbody style="border: none;">
+                <tr style="border: none;">
+                    <td style="border: none;">
+                        <img style="background-color: white; color: white;padding: 3px;"
+                            src="http://localhost:8000/static/assets/img/logo/black.jpg" width="100" alt="">
+                    </td>
+                    <td style="border: none;">
+                        </tdstyle>
+                        <div style="display: flex; flex-direction: column;">
+                            <h1>System Report</h1>
+                            <p class="bold">Printed On: {{print_date}}</p>
+                            <p class="bold">Period: {{from_date}} to {{to_date}}</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div class="mb-4">
+        <h2>Most Selected Interest</h2>
+        <table>
+            <thead>
+                <th>Category</th>
+                <th>Interest</th>
+                <th>User Seletions</th>
+                <th>Group Seletions</th>
+            </thead>
+            <tbody>
+                {% for interest in most_selected_interest %}
+                <tr>
+                    <td>{{ interest.category.name }}</td>
+                    <td>{{ interest.name }}</td>
+                    <td>
+                        {% if interest.user_selection %}
+                        {{ interest.user_selection }}
+                        {% else %}
+                        0
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if interest.group_selection %}
+                        {{ interest.group_selection }}
+                        {% else %}
+                        0
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mb-4">
+        <h2>Top Viewed Recommendations</h2>
+        <table>
+            <thead>
+                <th>Interest</th>
+                <th>Recommendation</th>
+                <th>Number Of Videos</th>
+                <th>Views</th>
+            </thead>
+            <tbody>
+                {% for recommendation in top_interests %}
+                <tr>
+                    <td>{{ recommendation.interest.name }}</td>
+                    <td>{{ recommendation.title }}</td>
+                    <td>{{ recommendation.recommendation_videos.all | length }}</td>
+                    <td>
+                        {% if recommendation.total_views %}
+                        {{ recommendation.total_views }}
+                        {% else %}
+                        0
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="mb-4">
+        <h2>Top Liked Recommendations</h2>
+        <table>
+            <thead>
+                <th>Interest</th>
+                <th>Recommendation</th>
+                <th>Number Of Videos</th>
+                <th>Views</th>
+            </thead>
+            <tbody>
+                {% for recommendation in top_liked_interests %}
+                <tr>
+                    <td>{{ recommendation.interest.name }}</td>
+                    <td>{{ recommendation.title }}</td>
+                    <td>{{ recommendation.recommendation_videos.all | length }}</td>
+                    <td>
+                        {% if recommendation.like_count %}
+                        {{ recommendation.like_count }}
+                        {% else %}
+                        0
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="mb-4">
+        <h2>Top Disliked Recommendations</h2>
+        <table>
+            <thead>
+                <th>Interest</th>
+                <th>Recommendation</th>
+                <th>Number Of Videos</th>
+                <th>Views</th>
+            </thead>
+            <tbody>
+                {% for recommendation in top_disliked_interests %}
+                <tr>
+                    <td>{{ recommendation.interest.name }}</td>
+                    <td>{{ recommendation.title }}</td>
+                    <td>{{ recommendation.recommendation_videos.all | length }}</td>
+                    <td>
+                        {% if recommendation.dislike_count %}
+                        {{ recommendation.dislike_count }}
+                        {% else %}
+                        0
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

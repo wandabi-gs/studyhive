@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} Create Group {% endblock %}
+
+{% block content %}
+<form method="post" class="col-lg-4 col-md-6 col-sm-8 col-xs-11 card border border-primary mx-auto p-3 mt-5">
+    {% csrf_token %}
+    <div>
+        <h3>Create Group</h3>
+        {% if error %}
+        <p class="text-danger">
+            {{error}}
+        </p>
+        {% endif %}
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Group Name</label>
+        <div class="input-group input-group-outline mt-1">
+            <input type="text" name="name" id="name" class="form-control">
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <div class="input-group input-group-outline mt-1">
+            <textarea class="textarea form-control" name="description" placeholder="Description" required></textarea>
+        </div>
+    </div>
+    <div class="form-check form-switch d-flex align-items-center mb-3">
+        <input class="form-check-input" name="private" type="checkbox" id="private">
+        <label class="form-check-label mb-0 ms-3" for="private">Is private</label>
+    </div>
+
+    <button class="btn w-100 btn-primary" type="submit">Create</button>
+</form>
+{% endblock %}

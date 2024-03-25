@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %} Groups {% endblock %}
+
+{% block content %}
+<div>
+    <div class="mb-4 box">
+        <div class="mb-2">
+            <p class="title is-size-4">My Groups</p>
+            <hr>
+        </div>
+        <div class="row">
+            {% for group in membership %}
+            <div class="col-lg-3 col-md-6 col-sm-12 p-3 d-flex flex-column">
+                <div class="card border border-primary p-3">
+                    <div class="card-body my-0 py-0">
+                        <div class="d-flex flex-column align-items-start">
+                            <h5 class="my-0 py-0">{{group.name}}</p>
+                            <p>{{group.description}}</p>
+                        </div>
+                    </div>
+                    <footer class="card-footer my-0 py-0">
+                        <a href="{% url 'group' group.uid %}" class="btn btn-outline-success w-100">View
+                            Group</a>
+                    </footer>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="mt-4 box">
+        <div class="mb-2">
+            <p class="title is-size-4">Recommended Groups</p>
+            <hr>
+        </div>
+        <div class="row">
+            {% for group in groups %}
+            <div class="col-lg-3 col-md-6 col-sm-12 p-3 d-flex flex-column">
+                <div class="card border border-primary p-3">
+                    <div class="card-body my-0 py-0">
+                        <div class="d-flex flex-column align-items-start">
+                            <h5 class="my-0 py-0">{{group.name}}</p>
+                            <p>{{group.description}}</p>
+                        </div>
+                    </div>
+                    <footer class="card-footer my-0 py-0 d-flex justify-content-between">
+                        {% if group.private %}
+                        <a href="{% url 'join-group' group.uid %}" class="btn w-100 btn-outline-info">Send Join Request</a>
+                        {% else %}
+                        <a href="{% url 'join-group' group.uid %}" class="btn w-100 btn-outline-success">Join
+                            Group</a>
+                        {% endif %}
+                    </footer>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

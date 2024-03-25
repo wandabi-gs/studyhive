@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load hq_thumbnail %}
+
+{% block title %} Recommendations {% endblock %}
+
+{% block content %}
+<div>
+    {% if recommendations %}
+    {% for interest in interests %}
+    <div class="shadow p-3 mb-4">
+        <div class="mb-3">
+            <h4 class="title is-4">{{interest.name}}</h4>
+        </div>
+        <div class="row">
+            {% for recommendation in recommendations %}
+            {% if recommendation.interest.uid == interest.uid %}
+            <div class="col-lg-3 col-md-4 col-sm-6 p-3 pb-5 d-flex flex-column">
+                <div class="card flex-grow-1  border border-primary">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <a class="d-block blur-shadow-image" href="{% if user.is_authenticated %}{% url 'recommendation' pk=recommendation.uid %}{% else %}#{% endif %}">
+                            <img src="{{ recommendation.thumbnail|hq_thumbnail}}" alt=""
+                                class="img-fluid shadow border-radius-lg">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <p class="title is-6">{{recommendation.title}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="box mx-4 has-text-centered">
+        <p class="subtitle is-size-5">There is currently no recommendations aailable for you</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

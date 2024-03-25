@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="mt-2 mb-5 d-flex justify-content-center">
+</div>
+<div class="row">
+  <div class="col-lg-6 col-sm-12">
+    <form method="post" class="container shadow rounded rounded-lg p-4" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="mb-2">
+        <h3 class="title is-4">Profile</h3>
+        {% if profile_error %}
+        <div class="text-center text-danger">
+          {{profile_error}}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="my-3">
+        <label class="label">Username</label>
+        <div class="input-group input-group-outline">
+          <div class="control">
+            <input class="form-control" type="text" value="{{user.username}}" disabled>
+          </div>
+        </div>
+      </div>
+
+      <div class="my-3">
+        <label class="label">Email</label>
+        <div class="input-group input-group-outline">
+          <div class="control">
+            <input class="form-control" type="text" name="email" value="{{user.email}}">
+          </div>
+        </div>
+      </div>
+
+      <div class="my-3">
+        <label class="label">Profile Picture</label>
+        <div class="input-group input-group-outline">
+          <div class="control">
+            <input type="file" name="image" id="image" class="form-control" accept="image/*" />
+          </div>
+        </div>
+      </div>
+      <input type="hidden" name="type" value="profile">
+      <div class="input-group input-group-outline">
+        <div class="control is-flex is-justify-content-end">
+          <button class="btn btn-primary">Update Profile</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <div class="col-lg-6 col-sm-12">
+    <form method="post" class="container shadow rounded rounded-lg p-4">
+      <input type="hidden" name="type" value="password">
+      {% csrf_token %}
+      <div class="mb-2">
+        <h3 class="title is-4">Change Password</h3>
+        {% if password_error %}
+        <div class="text-center text-danger">
+          {{password_error}}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="my-3">
+        <label class="label">Old Password</label>
+        <div class="input-group input-group-outline">
+          <div class="control">
+            <input class="form-control" type="password" name="old_password" value="{{old_password}}">
+          </div>
+        </div>
+      </div>
+
+      <div class="my-3">
+        <label class="label">New Password</label>
+        <div class="input-group input-group-outline">
+          <div class="control">
+            <input class="form-control" type="password" name="new_password" value="{{new_password}}">
+          </div>
+        </div>
+      </div>
+
+      <div class="my-3">
+        <label class="label">Confirm New Password</label>
+        <div class="input-group input-group-outline">
+          <div class="control">
+            <input class="form-control" type="password" name="confirm_password" value="{{confirm_password}}">
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group input-group-outline">
+        <div class="control is-flex is-justify-content-end">
+          <button class="btn btn-primary">Change Password</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}

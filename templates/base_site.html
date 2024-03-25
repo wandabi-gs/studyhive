@@ -1,0 +1,57 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" type="image/jpg" href="{% static 'assets/img/favicon.jpg' %}">
+    <title>
+        StudyHive {% block title %}{% endblock %}
+    </title>
+    <link href="{% static 'assets/css/nucleo-icons.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/css/nucleo-svg.css' %}" rel="stylesheet" />
+    <script src="{% static 'downloads/42d5adcbca.js' %}" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link id="pagestyle" href="{% static 'assets/css/material-dashboard.css' %}" rel="stylesheet" />
+    <script defer src="{% static 'downloads/nepcha-analytics.js' %}"></script>
+    <link rel="stylesheet" href="{%static 'fontawesome/all.min.css' %}">
+    <style>
+        @font-face {
+            font-family: 'Poppins';
+            src:url("{%static 'fonts/Poppins-Regular.ttf' %}");
+        }
+
+        * {
+            font-family: 'Poppins';
+        }
+        .page-item.active > .page-link{
+            color: white;
+        }
+    </style>
+    <script src="{%static 'fontawesome/all.min.js' %}"></script>
+    <script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/smooth-scrollbar.min.js' %}"></script>
+    <script src="{% static 'assets/js/plugins/chartjs.min.js' %}"></script>
+    <script>
+        var win = navigator.platform.indexOf('Win') > -1;
+        if (win && document.querySelector('#sidenav-scrollbar')) {
+            var options = {
+                damping: '0.5'
+            }
+            Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+        }
+    </script>
+    <script async defer src="{% static 'downloads/buttons.js' %}"></script>
+    <script src="{% static 'assets/js/material-dashboard.min.js' %}"></script>
+</head>
+<body class="bg-light">
+{% block main %}
+
+{% endblock %}
+</body>
+
+</html>

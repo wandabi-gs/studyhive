@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %} Connections {% endblock %}
+
+{% block content %}
+<div>
+    <div class="row">
+        {% for connection in connections %}
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-5 p-3 d-flex flex-column">
+            <div class="card flex-grow-1 border border-primary">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <figure class="d-block blur-shadow-image">
+                        <img src="{{connection.image.url}}" class="img-fluid shadow border-radius-lg border border-primary" alt="image">
+                    </figure>
+                </div>
+
+                <div class="card-body">
+                    <p class="my-0 py-0">{{connection.username}}</p>
+                    <p class="my-0 py-0">{{connection.email}}</p>
+                    <p class="my-0 py-0"></p>Joined On {{connection.created_at}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div class="row">
+        {% for connection in recommendations %}
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-5 p-3 d-flex flex-column">
+            <div class="card flex-grow-1 border border-primary">
+                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                    <figure class="d-block blur-shadow-image">
+                        <img src="{{connection.image.url}}" class="img-fluid shadow border-radius-lg border border-primary" alt="image">
+                    </figure>
+                </div>
+
+                <div class="card-body my-1 py-1">
+                    <p class="my-0 py-0">{{connection.username}}</p>
+                    <p class="my-0 py-0">{{connection.email}}</p>
+                    <p class="my-0 py-0"></p>Joined On {{connection.created_at}}</p>
+                </div>
+                <footer class="card-footer my-1 py-1 d-flex justify-content-between">
+                    <a class="btn btn-outline-success">                        
+                        <span class="btn-inner--icon me-1">
+                            <i class="fa fa-plus"></i>
+                        </span>
+                        <span class="btn-inner--text">Add Connection</span>
+                    </a>
+                    <a class="btn btn-outline-info">                        
+                        <span class="btn-inner--icon me-1">
+                            <i class="fa fa-eye"></i>
+                        </span>
+                        <span class="btn-inner--text">View User</span>
+                    </a>
+                </footer>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
