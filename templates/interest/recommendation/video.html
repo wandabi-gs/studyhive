@@ -16,8 +16,12 @@
             </div>
             <div class="d-flex justify-content-between mt-2">
                 <div>
-                    <button class="btn btn-outline-success me-2"><i class="fas fa-thumbs-up"></i></button>
-                    <button class="btn btn-outline-danger ms-2"><i class="fas fa-thumbs-down"></i></button>
+                    <button id="likeBtn"
+                        class="btn {% if mreview.like %} btn-success {% else %} btn-outline-success {% endif %} me-2"><i
+                            class="fas fa-thumbs-up"></i></button>
+                    <button id="dislikeBtn"
+                        class="btn {% if mreview.dislike %} btn-danger {% else %} btn-outline-danger {% endif %} ms-2"><i
+                            class="fas fa-thumbs-down"></i></button>
                 </div>
 
                 <button id="submit_comment" class="btn btn-outline-primary">Submit</button>
@@ -90,6 +94,7 @@
                     </button>
                     <!-- Headings -->
                     <select id="formatBlock" class="adv-option-button btn btn-outline-secondary mx-1">
+                        <option value=""></option>
                         <option value="H1">H1</option>
                         <option value="H2">H2</option>
                         <option value="H3">H3</option>
@@ -119,6 +124,29 @@
             document.getElementById("comment").value = "";
         });
 
+        document.getElementById('likeBtn').addEventListener('click', () => {
+            var data = new FormData();
+            data.append("comment", "{{mreview.comment}}");
+            data.append("sentiment", "like");
+
+            fetch("{% url 'post-review' pk=video.id %}", {
+                method: "POST",
+                body: data
+            }).then(response => response.json())
+            .then(data => console.log(data));
+        });
+
+        document.getElementById('dislikeBtn').addEventListener('click', () => {
+            var data = new FormData();
+            data.append("comment", "{{mreview.comment}}");
+            data.append("sentiment", "dislike");
+
+            fetch("{% url 'post-review' pk=video.id %}", {
+                method: "POST",
+                body: data
+            }).then(response => response.json())
+        });
+
         document.getElementById('text-input').innerHTML = '{{ notes.notes | safe}}';
         document.getElementById('save-notes').addEventListener('click', (e) => {
             e.preventDefault();
@@ -133,6 +161,12 @@
             document.getElementById('notes-form').dispatchEvent(submitEvent);
         });
     });
+
+    function updateReview(data){
+        var likeBtn = document.getElementById('likeBtn');
+        var dislikeBtn = document.getElementById('dislikeBtn');
+        
+    }
 
     let optionsButtons = document.querySelectorAll(".option-button");
     let advancedOptionButton = document.querySelectorAll(".adv-option-button");

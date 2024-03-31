@@ -28,25 +28,23 @@ class UserContentView(View):
     def post(self, request):
         return render(request,self.template_name)
     
-class ReviewView(View):
+class PostReview(View):
     def post(self, request, pk):
-        sentiment = request.data.get('sentiment')
-        review = request.data.get('review')
-        video = RecommendationVideo.objects.get(uid=pk)
+        sentiment = request.POST.get('sentiment')
+        review = request.POST.get('review')
+        video = RecommendationVideo.objects.get(id=pk)
         userReview, created = UserReview.objects.get_or_create(user=request.user, recommendation=video)
+        userReview.add_review(review)
 
         if sentiment:
             if sentiment == "like":
-                userReview.like = True
-                userReview.dislike = False
+                userReview.user_like()
 
             else:
-                userReview.like = False
-                userReview.dislike = True
+                userReview.user_dislike()
     
-        userReview.review = review
         userReview.save()
-        return JsonResponse({"message": "Review added successfully"})
+        return JsonResponse({"like" : userReview.like, "dislike" : userReview.dislike, "comment" : userReview.review})
     
     
 class VideoView(View):

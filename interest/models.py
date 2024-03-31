@@ -129,20 +129,20 @@ class UserReview(models.Model):
     recommendation = models.ForeignKey(
         to=RecommendationVideo, on_delete=models.CASCADE)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    review = models.TextField(default="")
+    review = models.TextField(default="", null=True, blank=True)
     like = models.BooleanField(default=False)
     dislike = models.BooleanField(default=False)
     updated_at = models.DateTimeField(auto_now=True)
 
     def user_like(self):
-        self.like = True
+        self.like = not self.like
         self.dislike = False
 
         self.save()
 
     def user_dislike(self):
         self.like = False
-        self.dislike = True
+        self.dislike = not self.dislike
         self.save()
 
     def add_review(self, review):

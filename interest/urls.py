@@ -8,11 +8,14 @@ from interest.views import (
     RecommendationsView, 
     RecommendationView, 
     UserContentView,
-    VideoView
+    VideoView,
+    PostReview
 )
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
+    path('post-review/<pk>/', login_required(csrf_exempt(PostReview.as_view())), name='post-review'),
     path('user-content/', login_required(UserContentView.as_view()), name='user-content'),
     path('<pk>/video/', login_required(VideoView.as_view()), name='recommendation-video'),
     path('<pk>/recommendation/', login_required(RecommendationView.as_view()), name='recommendation'),
