@@ -5,7 +5,7 @@
 </div>
 <div class="row">
   <div class="col-lg-6 col-sm-12">
-    <form method="post" class="container shadow rounded rounded-lg p-4" enctype="multipart/form-data">
+    <form method="post" class="container p-4" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="mb-2">
         <h3 class="title is-4">Profile</h3>
@@ -53,7 +53,7 @@
 
 
   <div class="col-lg-6 col-sm-12">
-    <form method="post" class="container shadow rounded rounded-lg p-4">
+    <form method="post" class="container p-4">
       <input type="hidden" name="type" value="password">
       {% csrf_token %}
       <div class="mb-2">

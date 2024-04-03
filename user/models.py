@@ -17,7 +17,7 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    uid = models.UUIDField(default=uuid4, unique=True)
+    uid = models.CharField(max_length=50, default=uuid4, unique=True)
     email = models.EmailField(unique=True)
     image = models.ImageField(upload_to="profiles/", null=True, blank=True)
     username = models.CharField(max_length=50, blank=True)
@@ -38,7 +38,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class Connection(models.Model):
-    uid = models.UUIDField(default=uuid4, unique=True)
+    uid = models.CharField(max_length=50, default=uuid4, unique=True)
     user = models.ForeignKey(
         to=CustomUser, to_field="uid",
         related_name="user",
@@ -59,7 +59,7 @@ class Connection(models.Model):
 
 
 class ReportedUser(models.Model):
-    uid = models.UUIDField(default=uuid4, unique=True)
+    uid = models.CharField(max_length=50, default=uuid4, unique=True)
     user = models.ForeignKey(
         to=CustomUser, to_field="uid",
         related_name="reported_user",

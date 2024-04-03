@@ -2,182 +2,190 @@
 {% load static %}
 {% block main %}
 {% load hq_thumbnail %}
-
 {% current_route as route %}
 
 <aside
-    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
-    id="sidenav-main">
-    <div class="sidenav-header">
-        <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
-            aria-hidden="true" id="iconSidenav"></i>
-        <a class="navbar-brand m-0" target="_blank">
-            <img src="{% static 'assets/img/logo/white.png' %}" class="navbar-brand-img h-100" alt="main_logo">
-            <span class="ms-1 font-weight-bold text-white">StudyHive</span>
+  class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark"
+  id="sidenav-main">
+  <div class="sidenav-header">
+    <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+      aria-hidden="true" id="iconSidenav"></i>
+    <a class="navbar-brand m-0" target="_blank">
+      <img src="{% static 'assets/img/logo/white.png' %}" class="navbar-brand-img h-100" alt="main_logo" />
+      <span class="ms-1 font-weight-bold text-white">StudyHive</span>
+    </a>
+  </div>
+  <hr class="horizontal light mt-0 mb-2" />
+  <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'home' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'home' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-home"></i>
+          </div>
+          <span class="nav-link-text ms-1">Home</span>
         </a>
-    </div>
-    <hr class="horizontal light mt-0 mb-2">
-    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'home' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'home' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-home"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Home</span>
-                </a>
-            </li>
+      </li>
 
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-sm text-primary font-weight-bolder opacity-8">Interests</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'interests' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'interests' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-book"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Interests</span>
-                </a>
-            </li>
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'my-interests' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'my-interests' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-book"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">My Interests</span>
-                </a>
-            </li>
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-sm text-primary font-weight-bolder opacity-8">
+          Interests
+        </h6>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'interests' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'interests' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-book"></i>
+          </div>
+          <span class="nav-link-text ms-1">Interests</span>
+        </a>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'my-interests' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'my-interests' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-book"></i>
+          </div>
+          <span class="nav-link-text ms-1">My Interests</span>
+        </a>
+      </li>
 
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-sm text-primary font-weight-bolder opacity-8">Recommendations
-                </h6>
-            </li>
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-sm text-primary font-weight-bolder opacity-8">
+          Recommendations
+        </h6>
+      </li>
 
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'recommendations' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'recommendations' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-lightbulb"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Recommendations</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'user-content' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'user-content' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-user-circle"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Content</span>
-                </a>
-            </li>
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'recommendations' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'recommendations' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-lightbulb"></i>
+          </div>
+          <span class="nav-link-text ms-1">Recommendations</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'my-content' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'my-content' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-user-circle"></i>
+          </div>
+          <span class="nav-link-text ms-1">User Content</span>
+        </a>
+      </li>
 
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-sm text-primary font-weight-bolder opacity-8">
+          Connections
+        </h6>
+      </li>
 
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-sm text-primary font-weight-bolder opacity-8">Connections</h6>
-            </li>
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'connections' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'connections' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-users"></i>
+          </div>
+          <span class="nav-link-text ms-1">Connections</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'groups' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'groups' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-user-group"></i>
+          </div>
+          <span class="nav-link-text ms-1">Groups</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'create-group' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'create-group' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-users"></i>
+          </div>
+          <span class="nav-link-text ms-1">Create Group</span>
+        </a>
+      </li>
+      {% endif %}
 
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'connections' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'connections' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-users"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Connections</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'groups' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'groups' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-user-group"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Groups</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'create-group' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'create-group' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-users"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Create Group</span>
-                </a>
-            </li>
-            {% endif %}
-
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-sm text-primary font-weight-bolder opacity-8">Account Settings
-                </h6>
-            </li>
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'profile' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'profile' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'logout' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'logout' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-door-open"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Logout</span>
-                </a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'login' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'login' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-door-closed"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Login</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {% if route == 'register' %} bg-gradient-primary active {% endif %}"
-                    href="{% url 'register' %}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa fa-user-plus"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Register</span>
-                </a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
+      <li class="nav-item mt-3">
+        <h6 class="ps-4 ms-2 text-uppercase text-sm text-primary font-weight-bolder opacity-8">
+          Account Settings
+        </h6>
+      </li>
+      {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'profile' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'profile' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-user"></i>
+          </div>
+          <span class="nav-link-text ms-1">Profile</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'logout' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'logout' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-door-open"></i>
+          </div>
+          <span class="nav-link-text ms-1">Logout</span>
+        </a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'login' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'login' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-door-closed"></i>
+          </div>
+          <span class="nav-link-text ms-1">Login</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'register' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'register' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-user-plus"></i>
+          </div>
+          <span class="nav-link-text ms-1">Register</span>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
 </aside>
 
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-3">
-    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow shdow-xl border-radius-xl bg-white" id="navbarBlur"
-        data-scroll="true">
-        <div class="container-fluid py-1 px-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">StudyHive</a>
-                    </li>
-                    <li class="breadcrumb-item text-sm text-primary active" aria-current="page">{{route | route_name}}
-                    </li>
-                </ol>
-                <h6 class="font-weight-bolder mb-0 text-primary">{{route | route_name}} </h6>
-            </nav>
-            <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-                <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                    <ul class="navbar-nav  justify-content-end">
-                        <div class="navbar-item text-primary text-bold">
-                            {{user.username}}
-                        </div>
+  <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow shdow-xl border-radius-xl bg-white" id="navbarBlur"
+    data-scroll="true">
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+          <li class="breadcrumb-item text-sm">
+            <a class="opacity-5 text-dark" href="javascript:;">StudyHive</a>
+          </li>
+          <li class="breadcrumb-item text-sm text-primary active" aria-current="page">
+            {{route | route_name}}
+          </li>
+        </ol>
+        <h6 class="font-weight-bolder mb-0 text-primary">
+          {{route | route_name}}
+        </h6>
+      </nav>
+      <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+        <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+          <ul class="navbar-nav justify-content-end">
+            <div class="navbar-item text-primary text-bold">
+              {{user.username}}
+            </div>
 
-                        <!-- <li class="nav-item dropdown pe-2 d-flex align-items-center">
+            <!-- <li class="nav-item dropdown pe-2 d-flex align-items-center">
                             <a href="{}" class="nav-link text-body p-0" id="dropdownMenuButton"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fa fa-bell cursor-pointer"></i>
@@ -205,37 +213,56 @@
                             </li>
                             </ul>
                         </li> -->
-                    </ul>
-                </div>
-            </div>
-
-            <li class="navbar-brand">
-                {% if user.is_authenticated %}
-                <img class="navbar-brand-img h-100 rounded rounded-pill border border-2 border-primary" width="40" src="{{user.image.url}}" alt="" />
-                {% else %}
-                <img class="navbar-brand-img h-100 rounded rounded-pill border border-2 border-primary" width="40" src="/media/profiles/default.webp" alt="" />
-                {% endif %}
-            </li>
+          </ul>
         </div>
-    </nav>
+      </div>
 
-    {% if messages %}
-    {% for message in messages %}
-    <div class="alert alert-success alert-dismissible text-white fade show" role="alert">
-        <span class="alert-icon align-middle">
-            <i class="fa fa-thumbs-up"></i>
-        </span>
-        <span class="alert-text"><strong>Success!</strong> {{message}}</span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+      <li class="navbar-brand">
+        {% if user.is_authenticated %}
+        <img class="navbar-brand-img h-100 rounded rounded-pill border border-2 border-primary" width="40"
+          src="{{user.image.url}}" alt="" />
+        {% else %}
+        <img class="navbar-brand-img h-100 rounded rounded-pill border border-2 border-primary" width="40"
+          src="/media/profiles/default.webp" alt="" />
+        {% endif %}
+      </li>
     </div>
-    {% endfor %}
-    {% endif %}
+  </nav>
 
-    <div class="container-fluid py-4">
-        {% block content %}
-        {% endblock %}
+  {% if messages %} {% for message in messages %}
+  <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification"
+    aria-hidden="true">
+    <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="py-3 text-center">
+            <i class="fa fa-bell h1 text-success">
+            </i>
+            <h4 class="text-gradient text-success mt-4">Success!</h4>
+            <p>{{message}}</p>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-end">
+          <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">Ok, Got it</button>
+        </div>
+      </div>
     </div>
+  </div>
+  {% endfor %} {% endif %}
+
+  <div class="container-fluid py-4 px-4">
+    <div class="bg-white shadow p-2 py-4 rounded rounded-lg">
+      {% block content %} {% endblock %}
+    </div>
+  </div>
 </main>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var notificationsModal = document.getElementById("modal-notification");
+    if (notificationsModal) {
+      var modal = new bootstrap.Modal(notificationsModal);
+      modal.show();
+    }
+  });
+</script>
 {% endblock %}

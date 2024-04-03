@@ -11,6 +11,7 @@ from interest.models import (
     RecommendationVideo, 
     UserInterest, 
     UserContent, 
+    UserContentRecommendation,
     UserReview, 
     RecommendationViews
 )
@@ -18,12 +19,87 @@ from interest.models import (
 from engines.recommendation import get_interest_recommendations
 from user.models import CustomUser as User
 
+class ListUserContentView(View):
+    template_name = 'user/content/manage-content.html'
+    
+    def get(self, request, pk):
+        context = {}
+        context["contents"] = UserContent.objects.filter(user=request.user, uid=pk)
+        return render(request,self.template_name, context)
+    
+    def post(self, request, pk):
+        return render(request,self.template_name)
 
-class UserContentView(View):
-    template_name = 'interest/interests.html'
+class AddCourseContentView(View):
+    template_name = 'user/content/add-recommendation.html'
+
+    def get(self, request, pk):
+        context = {}
+        context["content"] = UserContent.objects.get(uid=pk)
+        return render(request, self.template_name, context)
+    
+    def post(self, request, pk):
+        userContent = UserContent.objects.get(uid=pk)
+
+        content_type = request.POST.get('content_type')
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+
+        UserContentRecommendation.objects.create(
+            user = request.user,
+            content = userContent,
+            title = title,
+            description = description,
+            content_type = content_type
+        )
+
+        messages.add_message(request, messages.SUCCESS, f"'{title}' has been added to your content collection")
+        return redirect('my-content', pk=pk)
+
+class AddCourseView(View):
+    template_name = 'user/content/add-course.html'
     
     def get(self, request):
+        context = {}
+        interests, created = UserInterest.objects.get_or_create(user=request.user)
+        context["interests"] = interests.interests.all()
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        title = request.POST.get('name')
+        interest = request.POST.get('interest')
+        description = request.POST.get('description')
+        thumbnail = request.FILES.get('thumbnail')
+
+        UserContent.objects.create(
+            title=title,
+            interest=Interest.objects.get(uid=interest),
+            user=request.user,
+            description=description,
+            thumbnail=thumbnail
+        )
+
+        messages.add_message(request, messages.SUCCESS, f"'{title}' has been added to your content collection")
+        return redirect('my-content')
+
+class UserContentView(View):
+    template_name = 'user/content/manage-content.html'
+    
+    def get(self, request, pk):
+        context = {}
+        context["contents"] = UserContent.objects.filter(user=request.user, uid=pk)
+        return render(request,self.template_name, context)
+    
+    def post(self, request, pk):
         return render(request,self.template_name)
+
+class UserContentListView(View):
+    template_name = 'user/content/my-contents.html'
+    
+    def get(self, request):
+        context = {}
+        context["courses"] = UserContent.objects.filter(user=request.user)
+        return render(request,self.template_name, context)
     
     def post(self, request):
         return render(request,self.template_name)

@@ -6,7 +6,7 @@ User = get_user_model()
 
 
 class Category(models.Model):
-    uid = models.UUIDField(unique=True, default=uuid4, editable=False)
+    uid = models.CharField(max_length=50,unique=True, default=uuid4, editable=False)
     name = models.CharField(max_length=200, unique=True)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -18,9 +18,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 class Interest(models.Model):
-    uid = models.UUIDField(unique=True, default=uuid4, editable=False)
+    uid = models.CharField(max_length=50,unique=True, default=uuid4, editable=False)
     name = models.CharField(max_length=200, unique=True)
     description = models.TextField(blank=True)
     category = models.ForeignKey(Category, related_name='intrests',
@@ -41,8 +42,9 @@ rec_sources = [
     ['youtube', 'youtube']
 ]
 
+
 class Recommendation(models.Model):
-    uid = models.UUIDField(unique=True, default=uuid4, editable=False)
+    uid = models.CharField(max_length=50,unique=True, default=uuid4, editable=False)
     interest = models.ForeignKey(Interest, on_delete=models.CASCADE)
     title = models.TextField(default="")
     playlist_id = models.CharField(max_length=50, null=True, blank=True)
@@ -56,13 +58,16 @@ class Recommendation(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def interests(self):
         return self.interest_set.all()
-    
+
+
 class RecommendationViews(models.Model):
-    recommendation = models.ForeignKey(Recommendation, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    recommendation = models.ForeignKey(
+        Recommendation, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True)
     views = models.IntegerField(default=1)
     date = models.DateField(auto_now_add=True)
 
@@ -73,7 +78,7 @@ class RecommendationViews(models.Model):
 
 
 class RecommendationVideo(models.Model):
-    uid = models.UUIDField(unique=True, default=uuid4, editable=False)
+    uid = models.CharField(max_length=50,unique=True, default=uuid4, editable=False)
     recommendation = models.ForeignKey(
         Recommendation, related_name='recommendation_videos', on_delete=models.CASCADE
     )
@@ -94,7 +99,7 @@ class RecommendationVideo(models.Model):
 
 
 class RecommendationNotes(models.Model):
-    uid = models.UUIDField(unique=True, default=uuid4, editable=False)
+    uid = models.CharField(max_length=50,unique=True, default=uuid4, editable=False)
     user = models.ForeignKey(
         User, related_name='user_notes', on_delete=models.CASCADE)
     recommendation = models.ForeignKey(
@@ -110,7 +115,7 @@ class RecommendationNotes(models.Model):
 
 
 class UserInterest(models.Model):
-    uid = models.UUIDField(unique=True, default=uuid4, editable=False)
+    uid = models.CharField(max_length=50,unique=True, default=uuid4, editable=False)
     user = models.ForeignKey(
         User, related_name='user_intrests', on_delete=models.CASCADE)
     interests = models.ManyToManyField(Interest)
@@ -164,17 +169,14 @@ def defaultInterest():
 
 
 class UserContent(models.Model):
-    uid = models.UUIDField(unique=True, default=uuid4, editable=False)
+    uid = models.CharField(max_length=50,unique=True, default=uuid4, editable=False)
     interest = models.ForeignKey(
         Interest, related_name='user_content', on_delete=models.CASCADE)
     user = models.ForeignKey(
         User, related_name='user_content', on_delete=models.CASCADE)
     title = models.TextField(default="")
+    thumbnail = models.ImageField(upload_to='user_content/thumbnail/')
     description = models.TextField(default="")
-    content = models.FileField(
-        upload_to='user_content/', null=True, blank=True)
-    content_type = models.CharField(
-        max_length=10, default='video', choices=uploads)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -184,3 +186,22 @@ class UserContent(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class UserContentRecommendation(models.Model):
+    uid = models.CharField(max_length=50,unique=True, default=uuid4, editable=False)
+    content = models.FileField(
+        upload_to='user_content/', null=True, blank=True)
+    content_type = models.CharField(
+        max_length=10, default='video', choices=uploads)
+    title = models.TextField(default="")
+    description = models.TextField(default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('-created_at',)
+        verbose_name_plural = 'User Content Recommendations'
+
+    def __str__(self):
+        return self.user_content.title

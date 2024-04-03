@@ -51,7 +51,34 @@ class UserView(View):
     def post(self, request, pk):
         return render(request, self.template_name)
     
+    
+class RemoveConnection(View):
+    def get(self, request, pk):
+        connection = User.objects.get(uid=pk)
+        
+        try:
+            con = Connection.objects.get(Q(connection=connection) | Q(user=connection))   
+            con.delete()
+            
+            messages.add_message(request, messages.SUCCESS, f"User '{connection.username}' has been removed from your connections")
 
+        except Connection.DoesNotExist:
+            pass
+
+        return redirect('connections')      
+    
+
+class AddConnection(View):
+    def get(self, request, pk):
+        connection = User.objects.get(uid=pk)
+        try:
+            Connection.objects.get(Q(connection=connection) | Q(user=connection))   
+
+        except Connection.DoesNotExist:
+            Connection.objects.create(user=request.user, connection=connection)
+            messages.add_message(request, messages.SUCCESS, f"User '{connection.username}' has been added to your connections")
+
+        return redirect('connections')      
 
 class ConnectionsView(View):
     template_name = 'user/connections.html'

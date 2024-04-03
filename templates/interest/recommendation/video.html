@@ -27,6 +27,32 @@
                 <button id="submit_comment" class="btn btn-outline-primary">Submit</button>
             </div>
         </div>
+        <div class="d-flex mt-4 flex-column p-2">
+            <h5>Comments</h5>
+            <hr class="py-0 my-0 border border-primary">
+            {% for review in reviews %}
+            <div class="rounded shadow rounded-lg p-3 mt-2 bg-light d-flex">
+                <div class="flex-grow-1">
+                    <h6>{{review.user.username}}</h6>
+                    <p class="mb-0 pb-0">{{review.review}}</p>
+                </div>
+                <div class="d-flex flex-column h-100 justify-content-center">
+                    <div class="d-flex justify-content-end mb-2">
+                        {% if review.like %}
+                        <i class="fa fa-thumbs-up text-success text-lg"></i>
+                        {% endif %}
+
+                        {% if review.dislike %}
+                        <i class="fa fa-thumbs-down text-danger text-lg"></i>
+                        {% endif %}
+                    </div>
+                    <div class="mt-2">
+                        <p>{{review.updated_at}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
     <div class="col-md-6 col-sm-12 p-3 container">
@@ -133,7 +159,7 @@
                 method: "POST",
                 body: data
             }).then(response => response.json())
-            .then(data => console.log(data));
+                .then(data => console.log(data));
         });
 
         document.getElementById('dislikeBtn').addEventListener('click', () => {
@@ -162,10 +188,10 @@
         });
     });
 
-    function updateReview(data){
+    function updateReview(data) {
         var likeBtn = document.getElementById('likeBtn');
         var dislikeBtn = document.getElementById('dislikeBtn');
-        
+
     }
 
     let optionsButtons = document.querySelectorAll(".option-button");

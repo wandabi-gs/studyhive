@@ -3,7 +3,7 @@
 {% block title %} Group - {{group.name}} {% endblock %}
 
 {% block content %}
-<div class="row bg-white shadow p-3 rounded" style="height: 95vh;">
+<div class="row p-3 rounded" style="height: 95vh;">
     <div class="col-2 shadow bg-white rounded" style="height:95vh;overflow-y: auto;">
         {% for ugroup in groups %}
         {% if ugroup.id == group.id %}

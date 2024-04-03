@@ -4,59 +4,123 @@
 
 {% block content %}
 <div>
-    <div class="row">
-        {% for connection in connections %}
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-5 p-3 d-flex flex-column">
-            <div class="card flex-grow-1 border border-primary">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                    <figure class="d-block blur-shadow-image">
-                        <img src="{{connection.image.url}}" class="img-fluid shadow border-radius-lg border border-primary" alt="image">
-                    </figure>
-                </div>
 
-                <div class="card-body">
-                    <p class="my-0 py-0">{{connection.username}}</p>
-                    <p class="my-0 py-0">{{connection.email}}</p>
-                    <p class="my-0 py-0"></p>Joined On {{connection.created_at}}</p>
+    <div class="mb-3">
+        <div class="mb-4">
+            <h2>Recommended Users</h2>
+            <hr class="border border-dark">
+        </div>
+        <div class="row">
+            {% for connection in connections %}
+            {% if connection.user.id == user.id %}
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-5 p-4 d-flex flex-column">
+                <div class="card flex-grow-1 border border-primary">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <figure class="d-block blur-shadow-image">
+                            <img src="{{connection.connection.image.url}}"
+                                class="img-fluid shadow border-radius-lg border border-primary" alt="image">
+                        </figure>
+                    </div>
+
+                    <div class="card-body my-0 py-0">
+                        <p class="my-0 py-0">{{connection.connection.username}}</p>
+                        <p class="my-0 py-0">{{connection.connection.email}}</p>
+                        <p class="my-0 py-0"></p>Added On {{connection.created_at}}</p>
+                    </div>
+                    <footer class="card-footer my-1 py-1 d-flex justify-content-between">
+                        <a class="btn btn-outline-danger" href="{% url 'add-connection' pk=connection.uid %}">
+                            <span class="btn-inner--icon me-1">
+                                <i class="fa fa-trash-can"></i>
+                            </span>
+                            <span class="btn-inner--text">Delete</span>
+                        </a>
+                        <a class="btn btn-outline-info">
+                            <span class="btn-inner--icon me-1">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                            <span class="btn-inner--text">View</span>
+                        </a>
+                    </footer>
                 </div>
             </div>
+            {% else %}
+
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-5 p-4 d-flex flex-column">
+                <div class="card flex-grow-1 border border-primary">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <figure class="d-block blur-shadow-image">
+                            <img src="{{connection.user.image.url}}"
+                                class="img-fluid shadow border-radius-lg border border-primary" alt="image">
+                        </figure>
+                    </div>
+
+                    <div class="card-body">
+                        <p class="my-0 py-0">{{connection.user.username}}</p>
+                        <p class="my-0 py-0">{{connection.user.email}}</p>
+                        <p class="my-0 py-0"></p>Added On {{connection.created_at}}</p>
+                    </div>
+                    <footer class="card-footer my-1 py-1 d-flex justify-content-between">
+                        <a class="btn btn-outline-success" href="{% url 'remove-connection' pk=connection.uid %}">
+                            <span class="btn-inner--icon me-1">
+                                <i class="fa fa-plus"></i>
+                            </span>
+                            <span class="btn-inner--text">Delete</span>
+                        </a>
+                        <a class="btn btn-outline-info">
+                            <span class="btn-inner--icon me-1">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                            <span class="btn-inner--text">View</span>
+                        </a>
+                    </footer>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
 
 
-    <div class="row">
-        {% for connection in recommendations %}
-        <div class="col-lg-3 col-md-4 col-sm-6 pb-5 p-3 d-flex flex-column">
-            <div class="card flex-grow-1 border border-primary">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                    <figure class="d-block blur-shadow-image">
-                        <img src="{{connection.image.url}}" class="img-fluid shadow border-radius-lg border border-primary" alt="image">
-                    </figure>
-                </div>
-
-                <div class="card-body my-1 py-1">
-                    <p class="my-0 py-0">{{connection.username}}</p>
-                    <p class="my-0 py-0">{{connection.email}}</p>
-                    <p class="my-0 py-0"></p>Joined On {{connection.created_at}}</p>
-                </div>
-                <footer class="card-footer my-1 py-1 d-flex justify-content-between">
-                    <a class="btn btn-outline-success">                        
-                        <span class="btn-inner--icon me-1">
-                            <i class="fa fa-plus"></i>
-                        </span>
-                        <span class="btn-inner--text">Add Connection</span>
-                    </a>
-                    <a class="btn btn-outline-info">                        
-                        <span class="btn-inner--icon me-1">
-                            <i class="fa fa-eye"></i>
-                        </span>
-                        <span class="btn-inner--text">View User</span>
-                    </a>
-                </footer>
-            </div>
+    <div class="mb-3">
+        <div class="mb-4">
+            <h2>Recommended Users</h2>
+            <hr class="border border-dark">
         </div>
-        {% endfor %}
+        <div class="row">
+            {% for connection in recommendations %}
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-5 p-4 d-flex flex-column">
+                <div class="card flex-grow-1 border border-primary">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <figure class="d-block blur-shadow-image">
+                            <img src="{{connection.image.url}}"
+                                class="img-fluid shadow border-radius-lg border border-2 border-primary" alt="image">
+                        </figure>
+                    </div>
+
+                    <div class="card-body my-1 py-1">
+                        <p class="my-0 py-0">{{connection.username}}</p>
+                        <p class="my-0 py-0">{{connection.email}}</p>
+                        <p class="my-0 py-0"></p>Joined On {{connection.created_at}}</p>
+                    </div>
+                    <footer class="card-footer my-1 py-1 d-flex justify-content-between">
+                        <a class="btn btn-outline-success" href="{% url 'add-connection' pk=connection.uid %}">
+                            <span class="btn-inner--icon me-1">
+                                <i class="fa fa-plus"></i>
+                            </span>
+                            <span class="btn-inner--text">Add</span>
+                        </a>
+                        <a class="btn btn-outline-info">
+                            <span class="btn-inner--icon me-1">
+                                <i class="fa fa-eye"></i>
+                            </span>
+                            <span class="btn-inner--text">View</span>
+                        </a>
+                    </footer>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
+
 </div>
 {% endblock %}
