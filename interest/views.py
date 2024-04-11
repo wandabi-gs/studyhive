@@ -15,6 +15,7 @@ from interest.models import (
     UserReview, 
     RecommendationViews
 )
+from user.models import Connection
 
 from engines.recommendation import get_interest_recommendations
 from user.models import CustomUser as User
@@ -81,19 +82,62 @@ class AddCourseView(View):
 
         messages.add_message(request, messages.SUCCESS, f"'{title}' has been added to your content collection")
         return redirect('my-content')
-
+    
 class UserContentView(View):
+    template_name = 'interest/content/view.html'
+
+    def get(self, request, pk):
+        context = {}
+        context["content"] = UserContent.objects.get(uid=pk)
+        context["recommendations"] = UserContentRecommendation.objects.filter(user_content=context["content"]).order_by('title')
+        print(context["recommendations"])
+        return render(request, self.template_name, context)
+    
+class UserContentListView(View):
+    template_name = 'interest/content/list.html'
+    
+    def get(self, request):
+        context = {}
+        connections_user = Connection.objects.filter(user=request.user).values_list('connection__uid', flat=True)
+        user_connections = Connection.objects.filter(connection=request.user).values_list('user__uid', flat=True)
+        connections = list(connections_user) + list(user_connections)
+        context["contents"] = UserContent.objects.filter(user__uid__in=connections)
+        return render(request,self.template_name, context)
+    
+    def post(self, request):
+        return render(request,self.template_name)
+    
+class DeleteCourseView(View):
+    def get(self, request, pk):
+        UserContent.objects.get(uid=pk).delete()
+        messages.add_message(request, messages.SUCCESS, f"Course has been deleted")
+        return redirect('my-content')
+
+class MyContentView(View):
     template_name = 'user/content/manage-content.html'
     
     def get(self, request, pk):
         context = {}
-        context["contents"] = UserContent.objects.filter(user=request.user, uid=pk)
+        context["content"] = UserContent.objects.get(user=request.user, uid=pk)
+        context["recommendations"] = UserContentRecommendation.objects.filter(user_content=context["content"]).order_by("title")
         return render(request,self.template_name, context)
     
     def post(self, request, pk):
-        return render(request,self.template_name)
+        user_content = UserContent.objects.get(uid=pk)
+        content = request.FILES.get('content')
+        title = request.POST.get('title')
+        description = request.POST.get('description')
 
-class UserContentListView(View):
+        UserContentRecommendation.objects.create(
+            user_content = user_content,
+            content = content,
+            title = title,
+            description = description,
+        )
+
+        return redirect('my-content', pk=pk)
+
+class MyContentListView(View):
     template_name = 'user/content/my-contents.html'
     
     def get(self, request):

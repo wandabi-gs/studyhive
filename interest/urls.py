@@ -7,24 +7,29 @@ from interest.views import (
     DropInterestsView,
     RecommendationsView, 
     RecommendationView, 
-    UserContentListView,
-    UserContentView,
+    MyContentListView,
+    MyContentView,
+    DeleteCourseView,
     ListUserContentView,
     VideoView,
     PostReview,
     AddCourseView,
-    AddCourseContentView
+    AddCourseContentView,
+    UserContentListView,
+    UserContentView
 )
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 # add-course
 
 urlpatterns = [
+    path('user-content/<pk>/', login_required(UserContentView.as_view()), name='user-content'),
+    path('user-content/', login_required(UserContentListView.as_view()), name='user-content'),
     path('user-content/course/recommendation/add/', login_required(AddCourseContentView.as_view()), name='add-course-recommendation'),
     path('user-content/course/add/', login_required(AddCourseView.as_view()), name='add-course'),
-    path('user-content/', login_required(ListUserContentView.as_view()), name='user-content'),
-    path('my-content/', login_required(UserContentListView.as_view()), name='my-content'),
-    path('my-content/<pk>/', login_required(UserContentView.as_view()), name='my-content'),
+    path('user-content/<pk>/delete/', login_required(DeleteCourseView.as_view()), name='delete-content'),
+    path('my-content/', login_required(MyContentListView.as_view()), name='my-content'),
+    path('my-content/<pk>/', login_required(MyContentView.as_view()), name='my-content'),
     path('post-review/<pk>/', login_required(csrf_exempt(PostReview.as_view())), name='post-review'),
     path('<pk>/video/', login_required(VideoView.as_view()), name='recommendation-video'),
     path('<pk>/recommendation/', login_required(RecommendationView.as_view()), name='recommendation'),

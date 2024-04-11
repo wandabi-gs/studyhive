@@ -34,17 +34,17 @@
                         <p>{{course.description}}</p>
                     </div>
                     <footer class="card-footer d-flex justify-content-between mb-0 pb-0">
-                        <a href="" class="btn btn-outline-info">
+                        <a href="{% url 'my-content' pk=course.uid %}" class="btn btn-outline-info">
                             <span class="btn-inner--icon me-1">
                                 <i class="fa fa-eye"></i>
                             </span>
                             <span class="btn-inner--text">View</span>
                         </a>
-                        <a href="" class="btn btn-outline-primary">
+                        <a href="{% url 'delete-content' pk=course.uid %}" class="btn btn-outline-primary">
                             <span class="btn-inner--icon me-1">
-                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-trash-can"></i>
                             </span>
-                            <span class="btn-inner--text">Edit</span>
+                            <span class="btn-inner--text">Delete</span>
                         </a>
                     </footer>
                 </div>

@@ -7,7 +7,7 @@
     {% for category in categories %}
     <div class="mb-5 shadow p-3 rounded">
         <div class="mb-2">
-            <h4>{{category.name}}</h4>
+            <h4 class="text-uppercase">{{category.name}}</h4>
             <hr>
         </div>
         <div class="row">
@@ -15,11 +15,11 @@
             {% if interest.category.id == category.id %}
             <div class="col-lg-3 col-md-6 col-sm-8 p-3 d-flex flex-column">
                 <div class="card flex-grow-1 d-flex flex-column border border-primary">
-                    <div class="card-body flex-grow-1">
-                        <h5>{{interest.name}}</h5>
-                        {{interest.description}}
+                    <div class="card-body flex-grow-1 pb-0 mb-0">
+                        <h5 class="text-bold">{{interest.name}}</h5>
+                        <p class="pb-0 mb-0">{{interest.description}}</p>
                     </div>
-                    <div class="card-footer d-flex justify-content-between">
+                    <div class="card-footer d-flex justify-content-between mb-2 pb-0">
                         <a href="{% url 'drop-interest' pk=interest.uid %}" class="btn btn-outline-danger btn-icon">
                             <span class="btn-inner--icon me-1">
                                 <i class="fa fa-minus"></i>

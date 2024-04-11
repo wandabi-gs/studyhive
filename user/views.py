@@ -173,8 +173,14 @@ class Profile(View):
 class Login(View):
     template_name = 'user/login.html'
 
+    context = {
+        "email" : "",
+        "password" : "",
+        "error" : None
+    }
+
     def get(self, request):
-        return render(request=request, template_name=self.template_name)
+        return render(request=request, template_name=self.template_name, context=self.context)
     
     def post(self, request):
         next = None
@@ -184,7 +190,7 @@ class Login(View):
         email = request.POST.get('email')
         password = request.POST.get('password')
 
-        context = {
+        self.context = {
             "email" : email,
             "password" : password,
             "error" : None
@@ -212,13 +218,13 @@ class Login(View):
                 return redirect('home')
             
             else:
-                context["error"] = "Invalid login details provided"
+                self.context["error"] = "Invalid login details provided"
 
         except User.DoesNotExist:
-            context["error"] = "Invalid login details provided"
+            self.context["error"] = "Invalid login details provided"
 
 
-        return render(request=request, template_name=self.template_name, context=context)
+        return render(request=request, template_name=self.template_name, context=self.context)
     
 
 class Register(View):

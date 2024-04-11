@@ -190,10 +190,10 @@ class UserContent(models.Model):
 
 class UserContentRecommendation(models.Model):
     uid = models.CharField(max_length=50,unique=True, default=uuid4, editable=False)
+    user_content = models.ForeignKey(
+        UserContent, related_name='user_content_recommendation', on_delete=models.CASCADE)
     content = models.FileField(
         upload_to='user_content/', null=True, blank=True)
-    content_type = models.CharField(
-        max_length=10, default='video', choices=uploads)
     title = models.TextField(default="")
     description = models.TextField(default="")
     created_at = models.DateTimeField(auto_now_add=True)

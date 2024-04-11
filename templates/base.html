@@ -69,12 +69,21 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link text-white {% if route == 'user-content' %} bg-gradient-primary active {% endif %}"
+          href="{% url 'user-content' %}">
+          <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+            <i class="fa fa-user-circle"></i>
+          </div>
+          <span class="nav-link-text ms-1">User Content</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link text-white {% if route == 'my-content' %} bg-gradient-primary active {% endif %}"
           href="{% url 'my-content' %}">
           <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
             <i class="fa fa-user-circle"></i>
           </div>
-          <span class="nav-link-text ms-1">User Content</span>
+          <span class="nav-link-text ms-1">My Content</span>
         </a>
       </li>
 

@@ -70,7 +70,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self):
         await self.online_user(False, self.group)
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
-
         self.connected_users.remove(self.scope["user"])
         if len(self.connected_users) == 0:
             await self.group_call(False)

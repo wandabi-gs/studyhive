@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %} Connections {% endblock %}
+
+{% block content %}
+<div class="p-2">
+    <div class="mb-3">
+        <h5>{{content.title}}</h5>
+        <p>{{content.description}}</p>
+    </div>
+    <div class="row">
+        {% for recommendation in recommendations %}
+        <div class="col-lg-3 col-md-4 col-sm-6 p-3">
+            <div class="card border border-primary">
+                <div class="card-header mb-0 pb-0">
+                    <h5>{{recommendation.title}}</h5>
+                    <p class="py-0 my-0">{{recommendation.description}}</p>
+                    <hr class="border border-primary py-0 my-0 mt-2">
+                </div>
+                <div class="card-body">
+                    <video controls class="img-fluid">
+                        <source src="{{recommendation.content.url}}" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

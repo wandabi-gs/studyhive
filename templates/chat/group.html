@@ -7,7 +7,7 @@
     <div class="col-2 shadow bg-white rounded" style="height:95vh;overflow-y: auto;">
         {% for ugroup in groups %}
         {% if ugroup.id == group.id %}
-        <a href="{% url 'group' ugroup.uid %}"
+        <div
             class="w-100 px-2 d-flex flex-column text-white is-active w-100 bg-gradient-primary py-3 rounded my-2">
             <div class="d-flex text-uppercase text-md text-bold">
                 <span class="mx-2">
@@ -18,7 +18,7 @@
                 </span>
             </div>
             <p class="my-0 py-0 ms-2 text-sm"><b class="text-lowercase me-2">{{ugroup.latest.username}}</b>{{ugroup.latest.message}}</p>
-        </a>
+        </div>
         {% else %}
         <a href="{% url 'group' ugroup.uid %}"
             class="w-100 rounded shadow px-2 d-flex flex-column text-black bg-light py-3 my-2">

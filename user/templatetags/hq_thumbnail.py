@@ -37,4 +37,7 @@ def route_name(route):
     except:
         return None
 
+@register.filter(name="empty_review")
+def empty_review(review):
+        return review if review else ""
 
