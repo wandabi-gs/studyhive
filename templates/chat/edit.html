@@ -1,6 +1,78 @@
 {% extends 'base.html' %}
 
 {% block title %} Edit Group - {{group.name}} {% endblock %}
-
 {% block content %}
+<div class="mx-auto">
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <h4 class="text-uppercase">Edit {{group.name}}</h4>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Group Name</label>
+            <div class="input-group input-group-outline">
+                <input type="text" name="name" id="name" class="form-control" value="{{group.name}}" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Group Description</label>
+            <div class="input-group input-group-outline">
+                <input type="text" name="description" id="description" class="form-control"
+                    value="{{group.description}}" required>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Group Interests</label>
+            <div class="d-flex mb-2" style="flex-wrap: wrap;">
+                {% if group.interests.all %}
+                {% for interest in group.interests.all %}
+                <div class="m-2 d-flex align-center border border-secondary rounded py-1 px-3">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="interestuid" id="interestuid" value="{{interest.uid}}">
+                        <p class="mx-3 py-0 my-0">{{interest.name}} <button class="btn p-0 m-0 ms-2 text-danger" type="submit"><i
+                                    class="fa fa-trash-can"></i></button></p>
+                    </form>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>This group does not have specified interests</p>
+                {% endif %}
+            </div>
+            <div class="d-flex" style="flex-wrap: wrap;">
+                {% for interest in interests %}
+                {% if not interest in group.interests.all %}
+                <label for="{{interest.uid}}" class="form-label mx-3">
+                    <input type="checkbox" name="interests" id="{{interest.uid}}" value="{{interest.uid}}"
+                        class="me-2" /> {{interest.name}}
+                </label>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <button type="submit" name="submit" class="btn btn-primary mb-0 mt-4">Update Group</button>
+        </div>
+    </form>
+    <div class="mt-5 pt-4">
+        <h4 class="text-uppercase">Manage Group Members</h4>
+        <div class="row mt-3">
+            {% for member in members %}
+            {% if member.member.uid != user.uid %}
+            <div class="col-lg-3 col-md-6 col-sm-11 mx-auto p-3">
+                <div class="card p-2">
+                    <div class="mx-auto col-4">
+                        <img src="{{member.member.image.url}}" alt="" class="img-fluid">
+                    </div>
+                    <div class="mt-3">
+                        <p class="my-1 py-0">{{member.member.username}}</p>
+                        <p class="my-1 py-0">{{member.member.email}}</p>
+                    </div>
+                    <a href="" class="btn btn-outline-danger w-100 mt-3">Kick Member</a>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

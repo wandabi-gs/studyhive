@@ -3,6 +3,17 @@
 {% block title %} Group - {{group.name}} {% endblock %}
 
 {% block content %}
+<div class="shadow p-3 rounded d-flex justify-content-between">
+   <p class="text-dark text-uppercase m-0 p-0 text-xl text-bold">{{group.name}}</p> 
+   <div class="mx-2">
+   <a href="Javascript:void(0)" class="m-0 mx-3">
+    <i class="fa fa-phone text-success"></i>
+   </a>
+   <a href="{% url 'edit-group' pk=group.uid %}" class="mx-3">
+    <i class="fa text-xl fa-gear"></i>
+   </a>
+</div>
+</div>
 <div class="row p-3 rounded" style="height: 95vh;">
     <div class="col-2 shadow bg-white rounded" style="height:95vh;overflow-y: auto;">
         {% for ugroup in groups %}

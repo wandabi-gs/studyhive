@@ -4,6 +4,7 @@ from django.db.models import Q
 from chat.models import UserGroup, GroupMember, GroupMessage
 from django.contrib import messages
 from user.views import contains_non_alpha
+from interest.models import Interest
 
 class GroupView(View):
     template_name = 'chat/group.html'
@@ -78,10 +79,35 @@ class EditGroup(View):
     template_name = 'chat/edit.html'
     
     def get(self, request, pk):
-        return render(request, self.template_name)
+        context = {
+            "group" : UserGroup.objects.get(uid=pk),
+            "interests" : Interest.objects.all(),
+            "members" : GroupMember.objects.filter(group__uid=pk)
+        }
+
+        return render(request, self.template_name, context=context)
     
     def post(self, request, pk):
-        return render(request, self.template_name)
+        group = UserGroup.objects.get(uid=pk)
+
+
+        if "submit" in request.POST:
+            name = request.POST.get("name")
+            description = request.POST.get("description")
+            interests = request.POST.getlist("interests")
+
+            group.name = name
+            group.description = description
+
+            for interest in interests:
+                group.interests.add(Interest.objects.get(uid=interest))
+
+        else:
+            group.interests.remove(Interest.objects.get(uid=request.POST.get("interestuid")))
+
+        group.save()
+
+        return redirect("edit-group", pk=pk)
     
     
 class CreateGroup(View):
