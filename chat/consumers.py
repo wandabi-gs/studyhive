@@ -7,7 +7,7 @@ from dashboard.models import OnlineMember
 from datetime import datetime
 from django.contrib.auth import get_user_model
 
-User = get_user_model()
+from studyhive.settings import hate_speech_detection
 
 class ChatConsumer(AsyncWebsocketConsumer):
     connected_users = set()
@@ -99,6 +99,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     }
                 )
             else:
+                prediction = hate_speech_detection(message)
+                if prediction:
+                    message = f"This message has been flagged as {prediction}"
+
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from agora.views import Agora
+# from agora.views import Agora
 
 def Home(request):
     data = [

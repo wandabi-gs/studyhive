@@ -2,6 +2,8 @@ from os.path import join as join_path
 from pathlib import Path
 from decouple import config
 from os.path import join as join_path
+import joblib
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -116,3 +118,18 @@ CHANNEL_LAYERS = {
 LOGIN_URL = "/user/login/"
 
 LOGOUT_REDIRECT_URL = "/"
+
+hate_speech_detection_model = joblib.load(join_path("static","models","hate_speech_detection_model.pkl"))
+hate_speech_detection_vectorizer = joblib.load(join_path("static","models","hate_speech_detection_vectorizer.pkl"))
+
+hate_speech = {
+    0: "hate speech",
+    1: "offensive language",
+    2: None
+}
+
+def hate_speech_detection(text):
+    text_tfidf = hate_speech_detection_vectorizer.transform([text])
+    prediction = hate_speech_detection_model.predict(text_tfidf)
+
+    return hate_speech[prediction[0]]

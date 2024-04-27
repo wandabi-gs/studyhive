@@ -19,6 +19,7 @@ from user.models import Connection
 
 from engines.recommendation import get_interest_recommendations
 from user.models import CustomUser as User
+from studyhive.settings import hate_speech_detection
 
 class ListUserContentView(View):
     template_name = 'user/content/manage-content.html'
@@ -154,6 +155,10 @@ class PostReview(View):
         review = request.POST.get('review')
         video = RecommendationVideo.objects.get(id=pk)
         userReview, created = UserReview.objects.get_or_create(user=request.user, recommendation=video)
+        prediction = hate_speech_detection(review)
+        if prediction:
+            review = f"This review has been flagged as {prediction}"
+            
         userReview.add_review(review)
 
         if sentiment:

@@ -44,20 +44,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Connection(models.Model):
     uid = models.CharField(max_length=50, default=uuid4, unique=True)
-    user = models.ForeignKey(
-        to=CustomUser, to_field="uid",
-        related_name="user",
-        on_delete=models.CASCADE)
-    connection = models.ForeignKey(
-        to=CustomUser,
-        to_field="uid",
-        related_name="connection",
-        null=True,
-        on_delete=models.SET_NULL)
-    connection_status = models.CharField(
-        max_length=10,
-        choices=(('pending', 'pending'), ('accepted',
-                 'accepted'), ('revoked', 'revoked')))
+    user = models.ForeignKey(to=CustomUser, to_field="uid",related_name="user",on_delete=models.CASCADE)
+    connection = models.ForeignKey(to=CustomUser,to_field="uid",related_name="connection",null=True,on_delete=models.SET_NULL)
+    connection_status = models.CharField(max_length=10,choices=(('pending', 'pending'), ('accepted','accepted'), ('revoked', 'revoked')))
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f"{self.user.email} - {self.connection.email}"
